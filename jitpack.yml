@@ -1,0 +1,12 @@
+# JitPack build config — https://docs.jitpack.io/
+# Replace OWNER in gradle.properties before tagging a release.
+jdk:
+  - openjdk21
+
+# Publish library modules only (skip :sample). Disable config-cache for publish reliability.
+install:
+  - ./gradlew clean
+      :abtesting:publishReleasePublicationToMavenLocal
+      :abtesting-firebase:publishReleasePublicationToMavenLocal
+      -x test
+      --no-configuration-cache
