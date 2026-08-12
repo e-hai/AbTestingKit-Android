@@ -1,5 +1,4 @@
 # JitPack build config — https://docs.jitpack.io/
-# Replace OWNER in gradle.properties before tagging a release.
 jdk:
   - openjdk21
 

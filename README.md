@@ -176,9 +176,10 @@ AbTestingClient.fetchAndActivate() // 之后 feature_x == true
 
 ## 通过 JitPack 使用
 
-1. 将本仓库推到 GitHub，并把 [`gradle.properties`](gradle.properties) 里的 `OWNER` 换成你的 GitHub 用户名/组织名  
-2. 打 tag 并 push（例如 `v0.1.0`）  
-3. 打开 [jitpack.io](https://jitpack.io)，填入仓库地址，等构建变绿  
+仓库：[`e-hai/AbTestingKit`](https://github.com/e-hai/AbTestingKit)
+
+1. 推送代码并打 tag（例如 `v0.1.0`）  
+2. 打开 [jitpack.io/#e-hai/AbTestingKit](https://jitpack.io/#e-hai/AbTestingKit)，选中 tag 等待构建变绿  
 
 消费方 `settings.gradle.kts`：
 
@@ -192,14 +193,14 @@ dependencyResolutionManagement {
 }
 ```
 
-依赖（把 `OWNER` / 版本换成实际值）：
+依赖：
 
 ```kotlin
 // 仅用 Firebase 实现（会传递依赖 core）
-implementation("com.github.OWNER.AbTestingKit:abtesting-firebase:0.1.0")
+implementation("com.github.e-hai.AbTestingKit:abtesting-firebase:0.1.0")
 
 // 或只要 core（自行提供 AbTestingProvider）
-implementation("com.github.OWNER.AbTestingKit:abtesting:0.1.0")
+implementation("com.github.e-hai.AbTestingKit:abtesting:0.1.0")
 ```
 
 本地校验发布：
@@ -210,7 +211,7 @@ implementation("com.github.OWNER.AbTestingKit:abtesting:0.1.0")
   --no-configuration-cache
 ```
 
-产物会出现在 `~/.m2/repository/com/github/OWNER/AbTestingKit/`。
+产物会出现在 `~/.m2/repository/com/github/e-hai/AbTestingKit/`。
 
 ## 测试
 
