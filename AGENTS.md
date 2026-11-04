@@ -26,7 +26,7 @@
 - **不要**在库内调用 `FirebaseApp.initializeApp`；由宿主负责
 
 v1 不要擅自加入：variant 模型、Analytics 曝光、Flow 监听、多 Provider 路由、Compose 专用 API——除非用户明确要求。
-JitPack / Maven 发布已配置：坐标见 [`gradle.properties`](gradle.properties)（当前 `com.github.e-hai.AbTestingKit`）；脚本见 [`gradle/jitpack-publish.gradle.kts`](gradle/jitpack-publish.gradle.kts) 与 [`jitpack.yml`](jitpack.yml)。勿给 `:sample` 加 `maven-publish`。
+JitPack / Maven 发布已配置：坐标见 [`gradle.properties`](gradle.properties)（当前 `com.github.e-hai.AbTestingKit-Android`）；脚本见 [`gradle/jitpack-publish.gradle.kts`](gradle/jitpack-publish.gradle.kts) 与 [`jitpack.yml`](jitpack.yml)。勿给 `:sample` 加 `maven-publish`。
 
 ## Gradle / 工具链
 

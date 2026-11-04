@@ -1,4 +1,4 @@
-# AbTestingKit
+# AbTestingKit-Android
 
 Android A/B Testing / Remote Config 封装库。业务只依赖稳定 API，换后端时替换实现模块即可。
 
@@ -176,10 +176,10 @@ AbTestingClient.fetchAndActivate() // 之后 feature_x == true
 
 ## 通过 JitPack 使用
 
-仓库：[`e-hai/AbTestingKit`](https://github.com/e-hai/AbTestingKit)
+仓库：[`e-hai/AbTestingKit-Android`](https://github.com/e-hai/AbTestingKit-Android)
 
 1. 推送代码并打 tag（例如 `v0.1.0`）  
-2. 打开 [jitpack.io/#e-hai/AbTestingKit](https://jitpack.io/#e-hai/AbTestingKit)，选中 tag 等待构建变绿  
+2. 打开 [jitpack.io/#e-hai/AbTestingKit-Android](https://jitpack.io/#e-hai/AbTestingKit-Android)，选中 tag 等待构建变绿  
 
 消费方 `settings.gradle.kts`：
 
@@ -197,10 +197,10 @@ dependencyResolutionManagement {
 
 ```kotlin
 // 仅用 Firebase 实现（会传递依赖 core）
-implementation("com.github.e-hai.AbTestingKit:abtesting-firebase:0.1.0")
+implementation("com.github.e-hai.AbTestingKit-Android:abtesting-firebase:0.1.0")
 
 // 或只要 core（自行提供 AbTestingProvider）
-implementation("com.github.e-hai.AbTestingKit:abtesting:0.1.0")
+implementation("com.github.e-hai.AbTestingKit-Android:abtesting:0.1.0")
 ```
 
 本地校验发布：
@@ -211,7 +211,7 @@ implementation("com.github.e-hai.AbTestingKit:abtesting:0.1.0")
   --no-configuration-cache
 ```
 
-产物会出现在 `~/.m2/repository/com/github/e-hai/AbTestingKit/`。
+产物会出现在 `~/.m2/repository/com/github/e-hai/AbTestingKit-Android/`。
 
 ## 测试
 
