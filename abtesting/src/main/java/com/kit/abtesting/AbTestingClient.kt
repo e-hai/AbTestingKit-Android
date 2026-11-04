@@ -39,5 +39,5 @@ object AbTestingClient {
 
     private fun requireProvider(): AbTestingProvider =
         provider
-            ?: error("AbTestingClient is not installed. Call AbTestingClient.install(...) first.")
+            ?: error("AbTestingClient 尚未安装，请先调用 AbTestingClient.install(...)。")
 }

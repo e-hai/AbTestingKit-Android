@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
 
 private val demoDefaults = mapOf(
     "feature_x" to false,
-    "welcome_message" to "Hello from defaults",
+    "welcome_message" to "来自本地默认值的问候",
     "max_items" to 10L,
     "score_threshold" to 0.75,
 )
@@ -160,7 +160,7 @@ fun AbTestingDemoApp() {
             contentKey += 1
             refreshing = false
             snackbar.showSnackbar(
-                message = if (activated) "Fetch & activate succeeded" else "Fetch finished (no new activation)",
+                message = if (activated) "拉取并激活成功" else "拉取完成（无新配置激活）",
             )
         }
     }
@@ -183,7 +183,7 @@ fun AbTestingDemoApp() {
                     Column {
                         Text("AbTestingKit", style = MaterialTheme.typography.titleLarge)
                         Text(
-                            text = "Remote config playground",
+                            text = "远端配置演练场",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -238,11 +238,11 @@ private fun BootingPane(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Installing provider…",
+            text = "正在安装 Provider…",
             style = MaterialTheme.typography.titleMedium,
         )
         Text(
-            text = "setDefaults → fetchAndActivate",
+            text = "设置本地默认值 → 拉取并激活",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -303,16 +303,16 @@ private fun DemoContent(
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Text("Fetching…")
+                Text("正在拉取…")
             } else {
                 Icon(Icons.Rounded.Refresh, contentDescription = null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Fetch & Activate")
+                Text("拉取并激活配置")
             }
         }
 
         Text(
-            text = "Keys: feature_x · welcome_message · max_items · score_threshold",
+            text = "配置项：feature_x · welcome_message · max_items · score_threshold",
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 4.dp),
@@ -350,21 +350,21 @@ private fun ProviderBanner(provider: String, activated: Boolean, fetchCount: Int
             Spacer(modifier = Modifier.width(14.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (isFirebase) "Firebase Remote Config" else "Fake provider (test)",
+                    text = if (isFirebase) "Firebase 远端配置" else "Fake 模拟 Provider (测试)",
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
                     text = if (isFirebase) {
-                        "Live backend · fetch #$fetchCount"
+                        "真实后端 · 第 $fetchCount 次拉取"
                     } else {
-                        "Local test double · fetch #$fetchCount"
+                        "本地测试替身 · 第 $fetchCount 次拉取"
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
             StatusChip(
-                label = if (activated) "Active" else "Idle",
+                label = if (activated) "已激活" else "未激活",
                 container = if (activated) SuccessContainer else MaterialTheme.colorScheme.surfaceVariant,
                 content = if (activated) Success else MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -389,7 +389,7 @@ private fun WelcomeHero(message: String, contentKey: Int) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "welcome_message",
+                    text = "欢迎文案 (welcome_message)",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                 )
@@ -426,9 +426,9 @@ private fun FeatureFlagCard(enabled: Boolean, contentKey: Int) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("feature_x", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text("功能开关 (feature_x)", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text("Feature flag", style = MaterialTheme.typography.titleMedium)
+                Text(if (enabled) "已开启" else "已关闭", style = MaterialTheme.typography.titleMedium)
             }
             AnimatedContent(
                 targetState = contentKey to enabled,
@@ -436,7 +436,7 @@ private fun FeatureFlagCard(enabled: Boolean, contentKey: Int) {
                 label = "flag",
             ) { (_, on) ->
                 StatusChip(
-                    label = if (on) "ON" else "OFF",
+                    label = if (on) "开启" else "关闭",
                     container = if (on) SuccessContainer else DangerContainer,
                     content = if (on) Success else Danger,
                     leading = {
@@ -462,7 +462,7 @@ private fun ConfigMetrics(maxItems: Long, threshold: Double, contentKey: Int) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         MetricTile(
-            key = "max_items",
+            key = "最大条目 (max_items)",
             value = maxItems.toString(),
             contentKey = contentKey,
             modifier = Modifier.weight(1f),
@@ -527,7 +527,7 @@ private fun ThresholdTile(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "score_threshold",
+                text = "阈值分数 (score_threshold)",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -601,7 +601,7 @@ private fun installProvider(appContext: Context): String {
             setRemoteValues(
                 mapOf(
                     "feature_x" to true,
-                    "welcome_message" to "Hello from Fake remote",
+                    "welcome_message" to "来自模拟远端配置的问候",
                     "max_items" to 42L,
                     "score_threshold" to 0.9,
                 ),
