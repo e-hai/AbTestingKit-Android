@@ -26,7 +26,7 @@
 
 ## 发布与构建约定
 
-- **GitHub Packages 坐标**：`com.kit.abtesting`（全小写，避免 GitHub Packages 大小写解析异常），发布版本管理在 [`gradle.properties`](gradle.properties)（当前版本 `1.0.0`）。
+- **GitHub Packages 坐标**：`com.kit.abtesting`（全小写，避免 GitHub Packages 大小写解析异常），发布版本管理在 [`gradle.properties`](gradle.properties)（当前版本 `1.0.1`）。
 - **发布脚本与 CI/CD**：[`gradle/maven-publish.gradle.kts`](gradle/maven-publish.gradle.kts) 统一挂载至各 Library 模块，配合 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) 实现 Tag 自动发布至 GitHub Packages。禁止对 `:sample` 应用 `maven-publish`。
 - **AGP 9 工具链**：开启 **Built-in Kotlin** 支持。Library 模块仅应用 `com.android.library`，勿重复引入 `org.jetbrains.kotlin.android`。
 - **版本目录**：统一在 [`gradle/libs.versions.toml`](gradle/libs.versions.toml) 声明版本。

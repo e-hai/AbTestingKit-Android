@@ -1,6 +1,6 @@
 # AbTestingKit-Android
 
-[![Release](https://img.shields.io/badge/release-1.0.0-blue.svg)](https://github.com/e-hai/AbTestingKit-Android/releases)
+[![Release](https://img.shields.io/badge/release-1.0.1-blue.svg)](https://github.com/e-hai/AbTestingKit-Android/releases)
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-com.kit.abtesting-2088FF?logo=github)](https://github.com/e-hai/AbTestingKit-Android/packages)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![MinSDK](https://img.shields.io/badge/minSdk-24-orange.svg)]()
@@ -119,10 +119,10 @@ dependencyResolutionManagement {
 ```kotlin
 dependencies {
     // 方案 A：使用 Firebase 适配器（推荐，会自动传递依赖 com.kit.abtesting:abtesting）
-    implementation("com.kit.abtesting:abtesting-firebase:1.0.0")
+    implementation("com.kit.abtesting:abtesting-firebase:1.0.1")
 
     // 方案 B：仅引入 Core（自研后端或纯本地验证）
-    // implementation("com.kit.abtesting:abtesting:1.0.0")
+    // implementation("com.kit.abtesting:abtesting:1.0.1")
 }
 ```
 

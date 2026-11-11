@@ -7,7 +7,7 @@
 apply(plugin = "maven-publish")
 
 group = providers.gradleProperty("GROUP").orElse("com.kit.abtesting").get()
-version = providers.gradleProperty("VERSION_NAME").orElse("1.0.0").get()
+version = providers.gradleProperty("VERSION_NAME").orElse("1.0.1").get()
 
 afterEvaluate {
     extensions.configure<PublishingExtension>("publishing") {
