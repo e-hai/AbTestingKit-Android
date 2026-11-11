@@ -1,13 +1,13 @@
 /**
- * Shared JitPack / Maven Local publishing for Android library modules.
- * Applied from module build.gradle.kts via: apply(from = rootProject.file("gradle/jitpack-publish.gradle.kts"))
+ * Shared GitHub Packages / Maven Local publishing for Android library modules.
+ * Applied from module build.gradle.kts via: apply(from = rootProject.file("gradle/maven-publish.gradle.kts"))
  *
  * Requires android { publishing { singleVariant("release") { withSourcesJar() } } } in the module.
  */
 apply(plugin = "maven-publish")
 
-group = rootProject.property("GROUP").toString()
-version = rootProject.property("VERSION_NAME").toString()
+group = providers.gradleProperty("GROUP").orElse("com.kit.abtesting").get()
+version = providers.gradleProperty("VERSION_NAME").orElse("1.0.0").get()
 
 afterEvaluate {
     extensions.configure<PublishingExtension>("publishing") {
@@ -39,6 +39,21 @@ afterEvaluate {
                         connection.set(rootProject.property("POM_SCM_CONNECTION").toString())
                         developerConnection.set(rootProject.property("POM_SCM_CONNECTION").toString())
                     }
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/e-hai/AbTestingKit-Android")
+                credentials {
+                    username = providers.gradleProperty("gpr.user")
+                        .orElse(providers.environmentVariable("GITHUB_ACTOR"))
+                        .orNull
+                    password = providers.gradleProperty("gpr.key")
+                        .orElse(providers.environmentVariable("GITHUB_TOKEN"))
+                        .orNull
                 }
             }
         }

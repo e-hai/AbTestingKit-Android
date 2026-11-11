@@ -1,7 +1,7 @@
 # AbTestingKit-Android
 
 [![Release](https://img.shields.io/badge/release-1.0.0-blue.svg)](https://github.com/e-hai/AbTestingKit-Android/releases)
-[![JitPack](https://jitpack.io/v/e-hai/AbTestingKit-Android.svg)](https://jitpack.io/#e-hai/AbTestingKit-Android)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-com.kit.abtesting-2088FF?logo=github)](https://github.com/e-hai/AbTestingKit-Android/packages)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![MinSDK](https://img.shields.io/badge/minSdk-24-orange.svg)]()
 
@@ -70,39 +70,65 @@ flowchart TD
 
 ---
 
-## 快速接入
+## 快速接入（GitHub Packages）
 
-### 1. 添加 JitPack 仓库
+> **重要说明**：GitHub Packages 即使是公开仓库也要求携带鉴权凭证拉取依赖，开发者需先配置只读 `read:packages` Token。
 
-在项目的根目录 `settings.gradle.kts` 中添加 JitPack：
+### 1. 配置 GitHub Packages 凭证
+
+前往 GitHub [Personal Access Tokens (classic)](https://github.com/settings/tokens) 生成一个具备 **`read:packages`** 权限的 Token，然后选择以下任一方式配置（切勿将 Token 提交到 Git）：
+
+* **方式 A（推荐，全局生效）**：在本地 `~/.gradle/gradle.properties` 中添加：
+  ```properties
+  gpr.user=你的GitHub用户名
+  gpr.key=你的GitHub_PAT_Token
+  ```
+* **方式 B（CI/CD 环境变量）**：配置环境变量 `GITHUB_ACTOR` 与 `GITHUB_TOKEN`（GitHub Actions 中可直接使用内置 `${{ secrets.GITHUB_TOKEN }}`）。
+
+### 2. 添加 GitHub Packages 仓库
+
+在消费方项目的 `settings.gradle.kts` 中配置仓库：
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io") }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/e-hai/AbTestingKit-Android")
+            credentials {
+                username = providers.gradleProperty("gpr.user")
+                    .orElse(providers.environmentVariable("GITHUB_ACTOR"))
+                    .orNull
+                password = providers.gradleProperty("gpr.key")
+                    .orElse(providers.environmentVariable("GITHUB_TOKEN"))
+                    .orNull
+            }
+        }
     }
 }
 ```
 
-### 2. 引入依赖
+> 若希望把凭证放在项目的 `local.properties`（已被 `.gitignore` 忽略），可在 `settings.gradle.kts` 中通过 `java.util.Properties` 读取并赋值给 `username` / `password`。
+
+### 3. 引入依赖
 
 根据项目需求在 `app/build.gradle.kts` 中添加：
 
 ```kotlin
 dependencies {
-    // 方案 A：使用 Firebase 适配器（推荐，会自动传递依赖 :abtesting core）
-    implementation("com.github.e-hai.AbTestingKit-Android:abtesting-firebase:1.0.0")
+    // 方案 A：使用 Firebase 适配器（推荐，会自动传递依赖 com.kit.abtesting:abtesting）
+    implementation("com.kit.abtesting:abtesting-firebase:1.0.0")
 
     // 方案 B：仅引入 Core（自研后端或纯本地验证）
-    // implementation("com.github.e-hai.AbTestingKit-Android:abtesting:1.0.0")
+    // implementation("com.kit.abtesting:abtesting:1.0.0")
 }
 ```
 
 > **注意**：本库遵循控制反转原则，**不会在库内部自动初始化 Firebase**。接入宿主应用需按照官方流程配置 `google-services` 插件及 `google-services.json`。
 
-### 3. 初始化与拉取
+### 4. 初始化与拉取
 
 推荐在 `Application.onCreate` 或启动任务流中配置：
 
@@ -141,7 +167,7 @@ class MyApp : Application() {
 }
 ```
 
-### 4. 读取配置
+### 5. 读取配置
 
 在任意业务层调用点，直接面向 `AbTestingClient` 读取：
 
@@ -229,11 +255,52 @@ class CustomServerAbTestingProvider(
 
 ---
 
+## 从 JitPack 迁移到 GitHub Packages
+
+如果旧项目曾使用 JitPack 引用，请按如下对照修改：
+
+| 项目 | 旧配置（JitPack） | 新配置（GitHub Packages） |
+| :--- | :--- | :--- |
+| **仓库地址** | `https://jitpack.io` | `https://maven.pkg.github.com/e-hai/AbTestingKit-Android`（需鉴权） |
+| **Firebase 坐标** | `com.github.e-hai.AbTestingKit-Android:abtesting-firebase:<ver>` | `com.kit.abtesting:abtesting-firebase:<ver>` |
+| **Core 坐标** | `com.github.e-hai.AbTestingKit-Android:abtesting:<ver>` | `com.kit.abtesting:abtesting:<ver>` |
+
+API 与包名（`com.kit.abtesting.*`）完全保持不变，业务代码无需任何修改。
+
+---
+
 ## 演示工程 (Sample)
 
 克隆本项目并在 Android Studio 中直接运行 `:sample` 模块：
 - **无 Firebase 配置**：自动优雅降级为 `FakeAbTestingProvider`，开箱即用体验数据变化与动画。
 - **对接真实 Firebase**：将 `google-services.json` 放入 `sample/` 目录，在 `sample/build.gradle.kts` 中应用 `com.google.gms.google-services` 插件即可。
+
+---
+
+## 发布新版本（维护者指南）
+
+本项目已配置 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) 与 [`gradle/maven-publish.gradle.kts`](gradle/maven-publish.gradle.kts)：
+
+### 自动发布（推荐）
+推送版本 Tag（如 `1.0.1` 或 `v1.0.1`）后，GitHub Actions 将自动运行单测并发布至 GitHub Packages：
+```bash
+git tag -a 1.0.1 -m "Release 1.0.1"
+git push origin 1.0.1
+```
+也可以在 GitHub 仓库的 **Actions > Publish to GitHub Packages** 中点击 **Run workflow** 手动触发。
+
+### 本地手动发布 / 校验
+```bash
+# 1. 发布到本地 Maven (~/.m2/repository/com/kit/abtesting/) 进行验证
+./gradlew :abtesting:publishReleasePublicationToMavenLocal \
+  :abtesting-firebase:publishReleasePublicationToMavenLocal \
+  --no-configuration-cache
+
+# 2. 手动推送至 GitHub Packages（需配置具备 write:packages 权限的 gpr.user/gpr.key 或 GITHUB_TOKEN）
+./gradlew :abtesting:publishReleasePublicationToGitHubPackagesRepository \
+  :abtesting-firebase:publishReleasePublicationToGitHubPackagesRepository \
+  --no-configuration-cache
+```
 
 ---
 

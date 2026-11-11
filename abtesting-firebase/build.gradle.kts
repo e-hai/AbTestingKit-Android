@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-apply(from = rootProject.file("gradle/jitpack-publish.gradle.kts"))
+apply(from = rootProject.file("gradle/maven-publish.gradle.kts"))
 
 android {
     namespace = "com.kit.abtesting.firebase"
